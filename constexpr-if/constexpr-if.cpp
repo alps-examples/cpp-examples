@@ -6,9 +6,8 @@
 // Example for a function that would be much harder to
 // write without constexpr-if.
 //
-// Note that we can not simply type overload function
-// argument, but would need to use enable_if tricks for
-// multiple definitions.
+// Note that without constexpr-if, we would need to resort
+// to conditional definitions using enable_if.
 
 template <typename T>
 std::string whatKind() {
