@@ -33,3 +33,5 @@
 
 # Additions
 build
+.cache
+.vscode
