@@ -14,6 +14,11 @@ if(NOT CMAKE_CXX_EXTENSIONS AND MSVC)
   add_compile_options(/permissive-)
 endif()
 
+find_package(Threads REQUIRED)
+
 add_executable(asynchronify
   asynchronify.cpp
   )
+
+target_link_libraries(asynchronify
+  PRIVATE Threads::Threads)
