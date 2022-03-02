@@ -9,6 +9,11 @@ if(NOT CMAKE_CXX_EXTENSIONS AND MSVC)
   add_compile_options(/permissive-)
 endif()
 
+find_package(TBB REQUIRED)
+
 add_executable(parallel-sort
   parallel-sort.cpp
   )
+
+target_link_libraries(parallel-sort
+  PRIVATE TBB::tbb)
