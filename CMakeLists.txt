@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.14)
 
 project(cpp-examples)
 
+enable_testing()
+
 add_subdirectory(asynchronify)
 add_subdirectory(class-templ-arg-deduction)
 add_subdirectory(constexpr-if)

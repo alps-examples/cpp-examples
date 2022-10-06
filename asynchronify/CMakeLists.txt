@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.14)
 
 project(asynchronify)
 
+include(CTest)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -22,3 +24,5 @@ add_executable(asynchronify
 
 target_link_libraries(asynchronify
   PRIVATE Threads::Threads)
+
+add_test(asynchronify asynchronify)
