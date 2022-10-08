@@ -10,10 +10,10 @@ std::string greeting(std::string& who)
     who.clear();
 }
 
-void example_synchron()
+bool test_example_sync()
 {
     std::string who = "world";
-    std::cout << __FUNCTION__ << ": " << greeting(who) << std::endl;
+	return greeting(who) == "Hello world";
 }
 
 // Option 1: Strong asynchronification, extending lifetime of argument
@@ -24,7 +24,7 @@ std::string greeting(std::shared_ptr<std::string> who)
     return greeting(*who);
 }
 
-void example_asynchronify_strong()
+bool test_example_async_strong()
 {
     auto who = std::make_shared<std::string>("asynchronous world");
 
@@ -32,7 +32,7 @@ void example_asynchronify_strong()
 
     auto greetingOfWho = std::async(std::launch::async, [who] { return greeting(who); });
 
-    std::cout << __FUNCTION__ << ": " << greetingOfWho.get() << std::endl;
+	return greetingOfWho.get() == "Hello asynchronous world";
 }
 
 // Option 2: Weak asynchronification, making result optional
@@ -46,29 +46,31 @@ std::optional<std::string> greeting(std::weak_ptr<std::string> who)
     }
 }
 
-void example_asynchronify_weak(bool reset = false)
+bool test_example_async_weak_keep()
 {
     auto who = std::make_shared<std::string>("asynchronous world (Happy you are still there)");
 
-    // Be mindful of modifications until deferred processing
-    if (reset) {
-        who.reset();
-    }
+    auto greetingOfWho = std::async(std::launch::async, [p = std::weak_ptr<std::string>(who)] { return greeting(p); });
+
+	return *greetingOfWho.get() == "Hello asynchronous world (Happy you are still there)";
+}
+
+bool test_example_async_weak_reset()
+{
+    auto who = std::make_shared<std::string>("asynchronous world (Happy you are still there)");
+	who.reset();
 
     auto greetingOfWho = std::async(std::launch::async, [p = std::weak_ptr<std::string>(who)] { return greeting(p); });
 
-    if (auto greeting = greetingOfWho.get()) {
-        std::cout << __FUNCTION__ << ": " << *greeting << std::endl;
-    } else {
-        std::cout << __FUNCTION__ << ": "
-                  << "Greeting cannot be calculated: Argument not available. " << std::endl;
-    }
+    return !greetingOfWho.get();
 }
 
 int main()
 {
-    example_synchron();
-    example_asynchronify_strong();
-    example_asynchronify_weak(false);
-    example_asynchronify_weak(true);
+	int failed=0;
+    if(!test_example_sync()) failed++;
+	if(!test_example_async_strong()) failed++;
+	if(!test_example_async_weak_keep()) failed++;
+	if(!test_example_async_weak_reset()) failed++;
+	return failed;
 }
