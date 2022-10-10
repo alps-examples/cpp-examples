@@ -15,4 +15,5 @@ add_subdirectory(performance-test)
 add_subdirectory(reverse-iterators)
 add_subdirectory(structured-bindings)
 add_subdirectory(variable-arguments)
+add_subdirectory(tree-traversal)
 
