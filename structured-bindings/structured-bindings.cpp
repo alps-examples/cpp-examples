@@ -3,26 +3,26 @@
 #include <string>
 
 struct DevStats {
-  std::string name;
-  std::string team;
-  size_t commits;
+    std::string name;
+    std::string team;
+    size_t commits;
 };
 
-void iterateOld(std::map<std::string, DevStats>& devs) {
-  for (auto &p : devs) {
-    const auto &name = p.first;
-    const auto &stats = p.second;
+void iterateOld(std::map<std::string, DevStats>& devs)
+{
+    for (auto& p : devs) {
+        const auto& name = p.first;
+        const auto& stats = p.second;
 
-    // Do something with name and stats
-  }
+        // Do something with name and stats
+    }
 }
 
-void iterateNew(std::map<std::string, DevStats>& devs) {
-  for (auto &[name, stats] : devs) {
-    // Do something with name and stats
-  }
+void iterateNew(std::map<std::string, DevStats>& devs)
+{
+    for (auto& [name, stats] : devs) {
+        // Do something with name and stats
+    }
 }
 
-int main() {
-
-}
+int main() { }

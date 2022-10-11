@@ -10,15 +10,16 @@
 // to conditional definitions using enable_if.
 
 template <typename T>
-std::string whatKind() {
-	if constexpr (std::is_integral_v<T>) {
-		return "integral";
-	}
-	else {
-		return "other";
-	}
+std::string whatKind()
+{
+    if constexpr (std::is_integral_v<T>) {
+        return "integral";
+    } else {
+        return "other";
+    }
 }
 
-int main() {
-	std::cout << whatKind<short>() << "\n";
+int main()
+{
+    std::cout << whatKind<short>() << "\n";
 }

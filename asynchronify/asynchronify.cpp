@@ -13,7 +13,7 @@ std::string greeting(std::string& who)
 bool test_example_sync()
 {
     std::string who = "world";
-	return greeting(who) == "Hello world";
+    return greeting(who) == "Hello world";
 }
 
 // Option 1: Strong asynchronification, extending lifetime of argument
@@ -32,7 +32,7 @@ bool test_example_async_strong()
 
     auto greetingOfWho = std::async(std::launch::async, [who] { return greeting(who); });
 
-	return greetingOfWho.get() == "Hello asynchronous world";
+    return greetingOfWho.get() == "Hello asynchronous world";
 }
 
 // Option 2: Weak asynchronification, making result optional
@@ -52,13 +52,13 @@ bool test_example_async_weak_keep()
 
     auto greetingOfWho = std::async(std::launch::async, [p = std::weak_ptr<std::string>(who)] { return greeting(p); });
 
-	return *greetingOfWho.get() == "Hello asynchronous world (Happy you are still there)";
+    return *greetingOfWho.get() == "Hello asynchronous world (Happy you are still there)";
 }
 
 bool test_example_async_weak_reset()
 {
     auto who = std::make_shared<std::string>("asynchronous world (Happy you are still there)");
-	who.reset();
+    who.reset();
 
     auto greetingOfWho = std::async(std::launch::async, [p = std::weak_ptr<std::string>(who)] { return greeting(p); });
 
@@ -67,10 +67,14 @@ bool test_example_async_weak_reset()
 
 int main()
 {
-	int failed=0;
-    if(!test_example_sync()) failed++;
-	if(!test_example_async_strong()) failed++;
-	if(!test_example_async_weak_keep()) failed++;
-	if(!test_example_async_weak_reset()) failed++;
-	return failed;
+    int failed = 0;
+    if (!test_example_sync())
+        failed++;
+    if (!test_example_async_strong())
+        failed++;
+    if (!test_example_async_weak_keep())
+        failed++;
+    if (!test_example_async_weak_reset())
+        failed++;
+    return failed;
 }
