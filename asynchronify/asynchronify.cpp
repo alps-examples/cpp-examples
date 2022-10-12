@@ -1,6 +1,8 @@
+#include <chrono>
 #include <future>
 #include <iostream>
 #include <optional>
+#include <thread>
 
 // Simple, innocent looking greeting calculation ;)
 
@@ -58,11 +60,15 @@ bool test_example_async_weak_keep()
 bool test_example_async_weak_reset()
 {
     auto who = std::make_shared<std::string>("asynchronous world (Happy you are still there)");
+
+    auto greetingOfWho = std::async(std::launch::async, [p = std::weak_ptr<std::string>(who)] {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        return greeting(p);
+    });
+
     who.reset();
 
-    auto greetingOfWho = std::async(std::launch::async, [p = std::weak_ptr<std::string>(who)] { return greeting(p); });
-
-    return !greetingOfWho.get();
+    return !greetingOfWho.get().has_value();
 }
 
 int main()
