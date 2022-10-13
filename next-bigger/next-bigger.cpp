@@ -1,9 +1,10 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
+#include <iostream>
 #include <vector>
 
-#include <iostream>
+#include <gtest/gtest.h>
 
 /// Return smallest integer larger than @p num with the same decimal digits,
 /// i. e., the decimal digit sequence of the returned number is a permutation of @p num.
@@ -40,14 +41,14 @@ int64_t nextBigger(const int64_t num)
     return -1;
 }
 
-int main()
+TEST(NextBigger, Basics)
 {
-    std::cout << (nextBigger(12) == 21) << std::endl;
-    std::cout << (nextBigger(513) == 531) << std::endl;
-    std::cout << (nextBigger(2017) == 2071) << std::endl;
-    std::cout << (nextBigger(459853) == 483559) << std::endl;
-    std::cout << (nextBigger(59884848459853) == 59884848483559) << std::endl;
-    std::cout << (nextBigger(9) == -1) << std::endl;
-    std::cout << (nextBigger(111) == -1) << std::endl;
-    std::cout << (nextBigger(531) == -1) << std::endl;
+    EXPECT_EQ(nextBigger(12), 21);
+    EXPECT_EQ(nextBigger(513), 531);
+    EXPECT_EQ(nextBigger(2017), 2071);
+    EXPECT_EQ(nextBigger(459853), 483559);
+    EXPECT_EQ(nextBigger(59884848459853), 59884848483559);
+    EXPECT_EQ(nextBigger(9), -1);
+    EXPECT_EQ(nextBigger(111), -1);
+    EXPECT_EQ(nextBigger(531), -1);
 }
