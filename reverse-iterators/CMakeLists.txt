@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.14)
 
 project(reverse-iterators)
 
+find_package(GTest REQUIRED)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -17,3 +19,9 @@ endif()
 add_executable(reverse-iterators
   reverse-iterators.cpp
   )
+
+target_link_libraries(reverse-iterators
+  GTest::gtest GTest::gtest_main
+)
+
+gtest_discover_tests(reverse-iterators)

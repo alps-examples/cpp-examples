@@ -7,6 +7,8 @@
 #include <unordered_set>
 #include <vector>
 
+#include <gtest/gtest.h>
+
 using namespace std;
 
 // lastOccurences - remove all copies but last from container
@@ -34,7 +36,7 @@ using namespace std;
 //     Romeo
 //
 // In-place Run-time O(N) Memory O(N)
-void lastOccurences(list<string>& names)
+void lastOccurences(vector<string>& names)
 {
     unordered_set<string> knowns;
     knowns.reserve(names.size());
@@ -55,26 +57,14 @@ void lastOccurences(list<string>& names)
             // of the deleted element.
             //
             // One line of code, ten lines of comment. Long live C++.
-            n = list<string>::reverse_iterator(names.erase(next(n).base()));
+            n = vector<string>::reverse_iterator(names.erase(next(n).base()));
         }
     }
 }
 
-int main()
-{
-    const vector<string> names = { "Juliett", "Romeo", "Paul", "Romeo", "George", "Romeo" };
-    const vector<string> expected = { "Juliett", "Paul", "George", "Romeo" };
-
-    map<string, function<bool()>> test;
-
-    test["Test1"] = [&]() {
-        list<string> v;
-        copy(names.begin(), names.end(), back_inserter(v));
-        lastOccurences(v);
-        return equal(v.begin(), v.end(), expected.begin(), expected.end());
-    };
-
-    for (auto& t : test) {
-        cout << t.first << (t.second() ? " passed." : " failed.") << endl;
-    }
+TEST(LastOccurences, Basic) {
+	const vector<string> names = { "Juliett", "Romeo", "Paul", "Romeo", "George", "Romeo" };
+	vector<string> v = names;
+	lastOccurences(v);
+	EXPECT_EQ(v,  vector<string>({"Juliett", "Paul", "George", "Romeo"}));
 }
