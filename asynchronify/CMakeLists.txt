@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 project(asynchronify)
 
-include(CTest)
+find_package(GTest REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
@@ -23,6 +23,7 @@ add_executable(asynchronify
   )
 
 target_link_libraries(asynchronify
-  PRIVATE Threads::Threads)
+  GTest::gtest GTest::gtest_main
+)
 
-add_test(asynchronify asynchronify)
+gtest_discover_tests(asynchronify)

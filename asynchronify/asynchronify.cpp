@@ -4,41 +4,38 @@
 #include <optional>
 #include <thread>
 
-// Simple, innocent looking greeting calculation ;)
+#include <gtest/gtest.h>
 
+/// Simple, innocent looking greeting calculation ;)
 std::string greeting(std::string& who)
 {
     return "Hello " + who;
     who.clear();
 }
 
-bool test_example_sync()
+TEST(Asynchronify_None, Access)
 {
     std::string who = "world";
-    return greeting(who) == "Hello world";
+    EXPECT_EQ(greeting(who), "Hello world");
 }
 
-// Option 1: Strong asynchronification, extending lifetime of argument
-
+/// Option 1: Strong asynchronification, extending lifetime of argument. Interestingly, we can reuse the old
+/// implementation
 std::string greeting(std::shared_ptr<std::string> who)
 {
-    // Interestingly, we can reuse the old implementation
     return greeting(*who);
 }
 
-bool test_example_async_strong()
+TEST(Asynchronify_Strong, Access)
 {
     auto who = std::make_shared<std::string>("asynchronous world");
 
-    // Be mindful of modifications until deferred processing
-
     auto greetingOfWho = std::async(std::launch::async, [who] { return greeting(who); });
 
-    return greetingOfWho.get() == "Hello asynchronous world";
+    EXPECT_EQ(greetingOfWho.get(), "Hello asynchronous world");
 }
 
-// Option 2: Weak asynchronification, making result optional
-
+/// Option 2: Weak asynchronification, making result optional
 std::optional<std::string> greeting(std::weak_ptr<std::string> who)
 {
     if (auto whoLocked = who.lock()) {
@@ -48,16 +45,20 @@ std::optional<std::string> greeting(std::weak_ptr<std::string> who)
     }
 }
 
-bool test_example_async_weak_keep()
+TEST(Asynchronify_Weak, Access)
 {
     auto who = std::make_shared<std::string>("asynchronous world (Happy you are still there)");
 
     auto greetingOfWho = std::async(std::launch::async, [p = std::weak_ptr<std::string>(who)] { return greeting(p); });
 
-    return *greetingOfWho.get() == "Hello asynchronous world (Happy you are still there)";
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+    who.reset();
+
+    EXPECT_EQ(*greetingOfWho.get(), "Hello asynchronous world (Happy you are still there)");
 }
 
-bool test_example_async_weak_reset()
+TEST(Asynchronify_Weak, DeletedBeforeAccess)
 {
     auto who = std::make_shared<std::string>("asynchronous world (Happy you are still there)");
 
@@ -68,19 +69,5 @@ bool test_example_async_weak_reset()
 
     who.reset();
 
-    return !greetingOfWho.get().has_value();
-}
-
-int main()
-{
-    int failed = 0;
-    if (!test_example_sync())
-        failed++;
-    if (!test_example_async_strong())
-        failed++;
-    if (!test_example_async_weak_keep())
-        failed++;
-    if (!test_example_async_weak_reset())
-        failed++;
-    return failed;
+    EXPECT_TRUE(!greetingOfWho.get().has_value());
 }
