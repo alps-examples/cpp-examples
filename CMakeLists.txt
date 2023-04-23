@@ -14,6 +14,7 @@ add_subdirectory(parallel-sort)
 add_subdirectory(performance-test)
 add_subdirectory(reverse-iterators)
 add_subdirectory(structured-bindings)
-add_subdirectory(variable-arguments)
 add_subdirectory(tree-traversal)
+add_subdirectory(tree-traversal-v2)
+add_subdirectory(variable-arguments)
 
