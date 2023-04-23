@@ -1,5 +1,9 @@
-# cpp-examples
+# Alp's C++ examples
 
-This repository is a collection of C++ examples.
+This repository is a collection of C++ examples including:
 
-The examples mostly demonstrate new language features of C++-14, C++-17 and above.
+- Language features of C++-14, C++-17
+- Implementation patterns
+- Usage of popular libraries
+- CMake build description file
+- CI testing
