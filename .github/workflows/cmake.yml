@@ -2,18 +2,21 @@ name: CMake
 
 on: [push, pull_request]
 
-env:
-  BUILD_TYPE: Release
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      BUILD_DIRECTORY: ${{github.workspace}}/build
+      BUILD_TYPE: Release
     steps:
-    - uses: actions/checkout@v3
-    - name: Build software & execute tests
+    - name : Checkout
+      uses: actions/checkout@v3
+    - name: Build
       run: |
         sudo apt-get install -y libgtest-dev libtbb-dev
-        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-        cd ${{github.workspace}}/build
+        cmake -B ${{env.BUILD_DIRECTORY}}  -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        cmake --build ${{env.BUILD_DIRECTORY}} --config ${{env.BUILD_TYPE}}
+    - name: Test
+      run: |
+        cd ${{env.BUILD_DIRECTORY}}
         ctest -C ${{env.BUILD_TYPE}}
