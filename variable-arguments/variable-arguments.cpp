@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include <gtest/gtest.h>
+
 namespace {
 
 /// Poor man's std::format
@@ -23,7 +25,17 @@ std::string fmt(const char* format, ...)
 
 } // namespace
 
-int main()
-{
-    std::cout << fmt("Example output: %i, %f, %s", 42, 1.23, "Hello") << "\n";
+
+TEST(FmtTest, Basic) {
+    std::string result = fmt("Hello, %s!", "world");
+    EXPECT_EQ(result, "Hello, world!");
+}
+TEST(FmtTest, EmptyString) {
+    std::string result = fmt("");
+    EXPECT_EQ(result, "");
+}
+TEST(MainTest, FormatString) {
+  std::string expected_output = "Example output: 42, 1.230000, Hello";
+  std::string actual_output = fmt("Example output: %i, %f, %s", 42, 1.23, "Hello");
+  EXPECT_EQ(expected_output, actual_output);
 }
