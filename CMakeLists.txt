@@ -19,4 +19,4 @@ add_subdirectory(tree-traversal)
 add_subdirectory(tree-traversal-v2)
 add_subdirectory(variable-arguments)
 add_subdirectory(mutexes)
-
+add_subdirectory(substring-search)
