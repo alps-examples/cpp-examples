@@ -18,5 +18,4 @@ jobs:
         cmake --build ${{env.BUILD_DIRECTORY}} --config ${{env.BUILD_TYPE}}
     - name: Test
       run: |
-        cd ${{env.BUILD_DIRECTORY}}
-        ctest -C ${{env.BUILD_TYPE}}
+        cmake --build ${{env.BUILD_DIRECTORY}} --target check
