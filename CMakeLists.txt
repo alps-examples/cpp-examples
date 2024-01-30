@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.14)
 
 project(cpp-examples)
 
+enable_testing()
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
+set(CMAKE_CTEST_COMMAND ctest --verbose)
+
 add_subdirectory(asynchronify)
 add_subdirectory(class-templ-arg-deduction)
 add_subdirectory(constexpr-if)
@@ -19,7 +23,3 @@ add_subdirectory(variable-arguments)
 add_subdirectory(mutexes)
 add_subdirectory(substring-search)
 add_subdirectory(string-construction)
-
-enable_testing()
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
-set(CMAKE_CTEST_COMMAND ctest --verbose)
