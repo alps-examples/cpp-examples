@@ -14,6 +14,7 @@ add_subdirectory(parallel-sort)
 add_subdirectory(structured-bindings)
 
 add_subdirectory(asynchronify)
+add_subdirectory(containers)
 add_subdirectory(hello-googletest)
 add_subdirectory(next-bigger)
 add_subdirectory(performance-test)
