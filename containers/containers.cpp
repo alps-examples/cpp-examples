@@ -51,3 +51,11 @@ TEST(Containers, VectorInit)
         EXPECT_EQ(a,b);
     }
 }
+
+TEST(Containers, ContainerCopy)
+{
+    std::vector<int> v2 (2, -1);
+    std::set s1(v2.begin(), v2.end());
+    EXPECT_EQ(s1.size(), 1);
+    EXPECT_EQ(s1.count(-1), 1);
+}
