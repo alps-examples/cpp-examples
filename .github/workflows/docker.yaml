@@ -1,0 +1,24 @@
+name: CMake
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      BUILD_DIRECTORY: ${{github.workspace}}/build
+      BUILD_TYPE: Release
+    steps:
+    - name : Checkout
+      uses: actions/checkout@v3
+    - name: Build & test
+      run: |
+        set -eux
+        docker build . -t cpp-examples-dev
+        docker run -v $PWD:$PWD -w $PWD -i cpp-examples-dev <<-COMMANDS
+        set -x
+        cmake -B $BUILD_DIRECTORY  -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+        cmake --build $BUILD_DIRECTORY --config $BUILD_TYPE
+        cmake --build $BUILD_DIRECTORY --target check
+        COMMANDS
+      shell: bash
